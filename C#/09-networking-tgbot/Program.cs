@@ -121,13 +121,13 @@ namespace TelegramBotExperiments
                     switch (command)
                     {
                         case "/start":
-                            if (!Directory.Exists($"{message.Chat.Username}"))
+                            if (!Directory.Exists($"{message.Chat.FirstName}"))
                             {
-                                Directory.CreateDirectory($"{message.Chat.Username}");
-                                Directory.CreateDirectory($@"{message.Chat.Username}\videos");
-                                Directory.CreateDirectory($@"{message.Chat.Username}\photos");
-                                Directory.CreateDirectory($@"{message.Chat.Username}\music");
-                                Directory.CreateDirectory($@"{message.Chat.Username}\docs");
+                                Directory.CreateDirectory($"{message.Chat.FirstName}");
+                                Directory.CreateDirectory($@"{message.Chat.FirstName}\videos");
+                                Directory.CreateDirectory($@"{message.Chat.FirstName}\photos");
+                                Directory.CreateDirectory($@"{message.Chat.FirstName}\music");
+                                Directory.CreateDirectory($@"{message.Chat.FirstName}\docs");
                             }
                             await botClient.SendTextMessageAsync(message.Chat, $"Добро пожаловать, {message.Chat.FirstName}!\n" +
                                 $"Я создал для тебя папочку, где буду хранить твои файлы.\n" +
@@ -166,7 +166,7 @@ namespace TelegramBotExperiments
 
         private static async Task DownloadFromCloud(ITelegramBotClient botClient, Message message, string path)
         {
-            DirectoryInfo directoryInfo = new DirectoryInfo($@"{message.Chat.Username}");
+            DirectoryInfo directoryInfo = new DirectoryInfo($@"{message.Chat.FirstName}");
             foreach (var dir in directoryInfo.GetDirectories())
                 foreach (var file in dir.GetFiles())
                     if (file.Name == path)
@@ -184,7 +184,7 @@ namespace TelegramBotExperiments
         private static async Task GetCloudView(ITelegramBotClient botClient, Message message)
         {
             string fileList = "";
-            DirectoryInfo directoryInfo = new DirectoryInfo($@"{message.Chat.Username}\docs");
+            DirectoryInfo directoryInfo = new DirectoryInfo($@"{message.Chat.FirstName}\docs");
             foreach (var file in directoryInfo.GetFiles())
             {
                 fileList += $"{file.Name}\n";
@@ -192,7 +192,7 @@ namespace TelegramBotExperiments
             await botClient.SendTextMessageAsync(message.Chat, $"Документы:\n{((fileList != "") ? fileList : "Нет файлов")}");
 
             fileList = "";
-            directoryInfo = new DirectoryInfo($@"{message.Chat.Username}\photos");
+            directoryInfo = new DirectoryInfo($@"{message.Chat.FirstName}\photos");
             foreach (var file in directoryInfo.GetFiles())
             {
                 fileList += $"{file.Name}\n";
@@ -200,7 +200,7 @@ namespace TelegramBotExperiments
             await botClient.SendTextMessageAsync(message.Chat, $"Фото:\n{((fileList != "") ? fileList : "Нет фото")}");
 
             fileList = "";
-            directoryInfo = new DirectoryInfo($@"{message.Chat.Username}\videos");
+            directoryInfo = new DirectoryInfo($@"{message.Chat.FirstName}\videos");
             foreach (var file in directoryInfo.GetFiles())
             {
                 fileList += $"{file.Name}\n";
@@ -208,7 +208,7 @@ namespace TelegramBotExperiments
             await botClient.SendTextMessageAsync(message.Chat, $"Видео:\n{((fileList != "") ? fileList : "Нет видео")}");
 
             fileList = "";
-            directoryInfo = new DirectoryInfo($@"{message.Chat.Username}\music");
+            directoryInfo = new DirectoryInfo($@"{message.Chat.FirstName}\music");
             foreach (var file in directoryInfo.GetFiles())
             {
                 fileList += $"{file.Name}\n";
@@ -222,7 +222,7 @@ namespace TelegramBotExperiments
             if (fileName == "")
                 fileName = doc.FilePath.ToLower() + format;
             else fileName += format;
-            using (FileStream fs = new FileStream($@"{message.Chat.Username}\{fileName}", FileMode.Create))
+            using (FileStream fs = new FileStream($@"{message.Chat.FirstName}\{fileName}", FileMode.Create))
                 await bot.DownloadFileAsync(doc.FilePath, fs);
             return fileName;
         }
