@@ -223,7 +223,7 @@ namespace TelegramBotExperiments
                 fileName = doc.FilePath.ToLower() + format;
             else fileName += format;
             using (FileStream fs = new FileStream($@"{message.Chat.FirstName}\{fileName}", FileMode.Create))
-                await bot.DownloadFileAsync(doc.FilePath, fs);
+                await botClient.DownloadFileAsync(doc.FilePath, fs);
             return fileName;
         }
 
